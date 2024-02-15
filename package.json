@@ -1,0 +1,20 @@
+{
+  "name": "bootcamps-server",
+  "version": "1.0.0",
+  "description": "A server created for bootcamps using node & express.",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "NODE_ENV=production node server",
+    "dev": "nodemon server"
+  },
+  "author": "Angesh B",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.4",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
