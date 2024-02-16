@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const logger = require('./middleware/logger')
 
 // configure dotenv to read from the config file
 dotenv.config({path: './config/config.env'});
@@ -10,6 +11,11 @@ const bootcamps = require('./routes/bootcamps');
 
 // Create a new express app
 const app = express();
+
+// Log requests and other details if it's dev
+if (process.env.NODE_ENV === 'development') {
+    app.use(logger);
+}
 
 // Handle endpoints
 const baseRoute = '/api/v1';
