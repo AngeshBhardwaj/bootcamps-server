@@ -11,23 +11,25 @@ dotenv.config({path: './config/config.env'});
 const bootcamps = require('./routes/bootcamps');
 
 
+// Connect to DB
+connectDB();
+
 // Create a new express app
 const app = express();
 
-// Connect to DB
-connectDB();
+// Body parser, without this req.body is not available
+app.use(express.json());
 
 // Log requests and other details if it's dev
 if (process.env.NODE_ENV === 'development') {
     app.use(logger);
 }
 
-// Handle endpoints
+// Handle endpoints by using Routes
 const baseRoute = '/api/v1';
-
-// Use Routes
 app.use(baseRoute + '/bootcamps', bootcamps);
 
+// Start the server
 const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {console.log(`Server started in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow)});
 
