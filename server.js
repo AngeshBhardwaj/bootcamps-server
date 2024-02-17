@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const colors = require('colors');
 const logger = require('./middleware/logger')
 const connectDB = require('./db/mongoose');
 
@@ -28,11 +29,11 @@ const baseRoute = '/api/v1';
 app.use(baseRoute + '/bootcamps', bootcamps);
 
 const PORT = process.env.PORT;
-const server = app.listen(PORT, () => {console.log(`Server started in ${process.env.NODE_ENV} mode on port ${PORT}`)});
+const server = app.listen(PORT, () => {console.log(`Server started in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow)});
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-    console.error(`Error occured: ${err.message}`);
+    console.error(`Error occured: ${err.message}`.red);
 
     // Close the server and exit the process with error code
     server.close(() => process.exit(1));
