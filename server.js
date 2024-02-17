@@ -28,4 +28,12 @@ const baseRoute = '/api/v1';
 app.use(baseRoute + '/bootcamps', bootcamps);
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {console.log(`Server started in ${process.env.NODE_ENV} mode on port ${PORT}`)});
+const server = app.listen(PORT, () => {console.log(`Server started in ${process.env.NODE_ENV} mode on port ${PORT}`)});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+    console.error(`Error occured: ${err.message}`);
+
+    // Close the server and exit the process with error code
+    server.close(() => process.exit(1));
+});
