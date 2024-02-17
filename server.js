@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const logger = require('./middleware/logger')
+const connectDB = require('./db/mongoose');
 
 // configure dotenv to read from the config file
 dotenv.config({path: './config/config.env'});
@@ -11,6 +12,9 @@ const bootcamps = require('./routes/bootcamps');
 
 // Create a new express app
 const app = express();
+
+// Connect to DB
+connectDB();
 
 // Log requests and other details if it's dev
 if (process.env.NODE_ENV === 'development') {
