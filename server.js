@@ -31,7 +31,7 @@ app.use(baseRoute + '/bootcamps', bootcamps);
 const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {console.log(`Server started in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow)});
 
-// Handle unhandled promise rejections
+// Handle unhandled promise rejections. Close the app if error in any promise is not handled.
 process.on('unhandledRejection', (err, promise) => {
     console.error(`Error occured: ${err.message}`.red);
 
