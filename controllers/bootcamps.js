@@ -33,8 +33,7 @@ exports.getBootcampById = async (req, res, next) => {
         }
         res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} fetched successfully.`, data: bootcamp});
     } catch (err) {
-        console.error(`Error occured while fetching bootcamp by ID: ${err}`.red);
-        res.status(400).json({success: false, message: `${err.message}`, data: null});
+        next(err);
     }
 }
 

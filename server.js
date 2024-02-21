@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const logger = require('./middleware/logger')
 const connectDB = require('./db/mongoose');
+const errorHandler = require('./middleware/error-handler')
 
 // configure dotenv to read from the config file
 dotenv.config({path: './config/config.env'});
@@ -25,9 +26,10 @@ if (process.env.NODE_ENV === 'development') {
     app.use(logger);
 }
 
-// Handle endpoints by using Routes
+// Handle endpoints by using Routes and errors by error handler
 const baseRoute = '/api/v1';
 app.use(baseRoute + '/bootcamps', bootcamps);
+app.use(errorHandler);
 
 // Start the server
 const PORT = process.env.PORT;
