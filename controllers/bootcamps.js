@@ -1,4 +1,5 @@
 const Bootcamp = require('../models/Bootcamp');
+const ErrorResponse = require('../utils/error-response');
 
 
 /**
@@ -29,11 +30,13 @@ exports.getBootcampById = async (req, res, next) => {
 
         // if fetched bootcamp is null, this means the entry doesn't exists.
         if (!bootcamp) {
-            return res.status(404).json({success: false, message: `Bootcamp with id ${req.params.id} does not exists.`, data: bootcamp});
+            return next(
+                new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
+                );
         }
         res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} fetched successfully.`, data: bootcamp});
     } catch (err) {
-        next(err);
+        next(new ErrorResponse(`${err.message}`, 400));
     }
 }
 

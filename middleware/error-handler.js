@@ -1,11 +1,11 @@
 const errorHandler = (err, req, res, next) => {
     // Log error details for DEV
-    console.error(`Error occured while fetching bootcamp by ID: ${err.stack}`.red);
+    console.error(`${err.stack}`.red);
 
     // send the response
-    res.status(400).json({
+    res.status(err.statusCode || 500).json({
         success: false, 
-        message: `${err.message}`, 
+        message: `${err.message}` || `Server error occured.`, 
         data: null
     });
 
