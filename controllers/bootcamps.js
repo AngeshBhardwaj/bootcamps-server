@@ -1,5 +1,6 @@
 const Bootcamp = require('../models/Bootcamp');
 const ErrorResponse = require('../utils/error-response');
+const asyncHandler = require('../middleware/async')
 
 
 /**
@@ -7,15 +8,10 @@ const ErrorResponse = require('../utils/error-response');
  * @route   GET '/api/v1/bootcamps'
  * @access  Public
  */
-exports.getBootcamps = async (req, res, next) => {
-    try {
-        const bootcamps = await Bootcamp.find();
-        res.status(200).json({success: true, message: `List fetched successfully.`, count: bootcamps.length, data: bootcamps});
-    } catch (err) {
-        next(err);
-    }
-    
-}
+exports.getBootcamps = asyncHandler(async (req, res, next) => {
+    const bootcamps = await Bootcamp.find();
+    res.status(200).json({success: true, message: `List fetched successfully.`, count: bootcamps.length, data: bootcamps});
+});
 
 
 /**
@@ -23,21 +19,18 @@ exports.getBootcamps = async (req, res, next) => {
  * @route   GET '/api/v1/bootcamps/:id'
  * @access  Public
  */
-exports.getBootcampById = async (req, res, next) => {
-    try {
-        const bootcamp = await Bootcamp.findById(req.params.id);
+exports.getBootcampById = asyncHandler(async (req, res, next) => {
+    const bootcamp = await Bootcamp.findById(req.params.id);
 
-        // if fetched bootcamp is null, this means the entry doesn't exists.
-        if (!bootcamp) {
-            return next(
-                new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
-                );
-        }
-        res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} fetched successfully.`, data: bootcamp});
-    } catch (err) {
-        next(err);
+    // if fetched bootcamp is null, this means the entry doesn't exists.
+    if (!bootcamp) {
+        return next(
+            new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
+            );
     }
-}
+    res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} fetched successfully.`, data: bootcamp});
+    
+});
 
 
 /**
@@ -45,14 +38,10 @@ exports.getBootcampById = async (req, res, next) => {
  * @route   POST '/api/v1/bootcamps'
  * @access  [Admin, Owner]
  */
-exports.createBootcamp = async (req, res, next) => {
-    try {
-        const newBootcamp = await Bootcamp.create(req.body);
-        res.status(201).json({success: true, message: `New bootcamp was created successfully.`, data: newBootcamp});  
-    } catch (err) {
-        next(err);
-    }
-}
+exports.createBootcamp = asyncHandler(async (req, res, next) => {
+    const newBootcamp = await Bootcamp.create(req.body);
+    res.status(201).json({success: true, message: `New bootcamp was created successfully.`, data: newBootcamp});  
+});
 
 
 /**
@@ -60,24 +49,20 @@ exports.createBootcamp = async (req, res, next) => {
  * @route   PUT '/api/v1/bootcamps/:id'
  * @access  [Admin, Owner]
  */
-exports.updateBootcampById = async (req, res, next) => {
-    try {
-        const updatedBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
-        });
-    
-        // if fetched bootcamp is null, this means the entry doesn't exists.
-        if (!updatedBootcamp) {
-            return next(
-                new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
-                );
-        }
-        res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} updated.`, data: updatedBootcamp});
-    } catch (err) {
-        next(err);
+exports.updateBootcampById = asyncHandler(async (req, res, next) => {
+    const updatedBootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    });
+
+    // if fetched bootcamp is null, this means the entry doesn't exists.
+    if (!updatedBootcamp) {
+        return next(
+            new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
+            );
     }
-}
+    res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} updated.`, data: updatedBootcamp});
+});
 
 
 /**
@@ -85,19 +70,14 @@ exports.updateBootcampById = async (req, res, next) => {
  * @route   DELETE '/api/v1/bootcamps/:id'
  * @access  [Admin, Owner]
  */
-exports.deleteBootcampById = async (req, res, next) => {
-    try {
-        const deletedBootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+exports.deleteBootcampById = asyncHandler(async (req, res, next) => {
+    const deletedBootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
 
-        // if fetched bootcamp is null, this means the entry doesn't exists.
-        if (!deletedBootcamp) {
-            return next(
-                new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
-                );
-        }
-        res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} was DELETED successfully.`, data: deletedBootcamp});
-    } catch (err) {
-        next(err);
+    // if fetched bootcamp is null, this means the entry doesn't exists.
+    if (!deletedBootcamp) {
+        return next(
+            new ErrorResponse(`Bootcamp with id ${req.params.id} does not exists.`, 404)
+            );
     }
-    
-}
+    res.status(200).json({success: true, message: `Bootcamp with id ${req.params.id} was DELETED successfully.`, data: deletedBootcamp});
+});
